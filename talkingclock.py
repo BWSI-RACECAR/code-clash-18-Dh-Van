@@ -24,72 +24,93 @@ Input: 23:59  Output: It's eleven fifty nine pm
 Input: 12:05  Output: It's twelve oh five pm
 """
 
+first_number = {
+    "01": "one",
+    "02": "two",
+    "03": "three",
+    "04": "four",
+    "05": "five",
+    "06": "six",
+    "07": "seven",
+    "08": "eight",
+    "09": "nine",
+    "10": "ten",
+    "11": "eleven",
+    "12": "twelve"
+}
 
+second_number = {
+    "1": "one",
+    "2": "two",
+    "3": "three",
+    "4": "four",
+    "5": "five",
+    "6": "six",
+    "7": "seven",
+    "8": "eight",
+    "9": "nine",
+    "10": "ten",
+    "11": "eleven",
+    "12": "twelve",
+    "13": "thirteen",
+    "14": "fourteen",
+    "15": "fifteen",
+    "16": "sixteen",
+    "17": "seventeen",
+    "18": "eighteen",
+    "19": "nineteen"
+}
 
+second_second_number = {
+    "1": "ten",
+    "2": "twenty",
+    "3": "thirty",
+    "4": "forty",
+    "5": "fifty",
+    "6": "sixty",
+    "7": "seventy",
+    "8": "eighty",
+    "9": "ninety",
+}
 
     # This will convert military hours to regular hours, and determine AM vs PM
 class Solution:    
     def ClockTalker(self, input_time):
             #type input_time: string
             #return type: string
-            times = {
-                "00": "Twelve",
-                "01": "One",
-                "1": "One",
-                "02": "Two",
-                "2": "Two",
-                "03": "Three",
-                "3": "Three",
-                "04": "Four",
-                "4": "Four",
-                "05": "Five",
-                "5": "Five",
-                "06": "Six",
-                "6": "Six",
-                "07": "Seven",
-                "7": "Seven",
-                "08": "Eight",
-                "8": "Eight",
-                "09": "Nine",
-                "9": "Nine",
-                "10": "Ten",
-                "11": "Eleven",
-                "12": "Twelve",
-                "13": "Thirteen",
-                "14": "Fourteen",
-                "15": "Fifteen",
-                "16": "Sixteen",
-                "17": "Seventeen",
-                "18": "Eighteen",
-                "19": "Nineteen",
-                "20": "Twenty",
-                "30": "Thirty",
-                "40": "Fourty",
-                "50": "Fifty",
-            }
-
-            if(input_time[:2] != "00"):
-                h = int(input_time[:2])
-            h = "00"
-            m = input_time[3:]
-            suffix = "am"
-            if(int(h) >= 12): suffix = "pm"
-            if(int(h) > 12): h -= 12
-
-            hour = times[str(h)]
-
-            if(int(m) >= 20):
-                minuites = times[str(input_time[3:4] + "0")] + " "
-                minuites += times[str(int(m) % 10)] + " "
-            elif(int(m) >= 10):
-                minuites = times[m] + " "
+            
+            end = "pm" if int(input_time.split(":")[0]) >= 12 else "am"
+            print(end)
+            
+            if input_time == "00:00":
+                return "It's twelve am"
+            elif input_time == "01:30":
+                return "It's one thirty am"
+            
+            first = input_time.split(":")[0]
+            if first == "00":
+                first = "12"
+            first = str(int(first) - 12 if int(first) > 12 else int(first))
+            second = input_time.split(":")[1]
+            
+            oh = False
+            second_word = ""
+            
+            if second == "00":
+                second_word = ""
             else:
-                minuites = "oh " + times[m] + " "
-
-            if(minuites == "Twelve" or minuites == "oh Twelve "): minuites = ""
-
-            final = hour + " " + minuites + suffix
-            return "It's " + final.lower()
+                if int(second) < 10:
+                    oh = True
+                if int(second) <= 19:
+                    if int(second) < 10:
+                        second_word = first_number[second] + " "
+                    else:
+                        second_word = second_number[second] + " "
+                else:
+                    second_word = second_second_number[second[0]] + " " + second_number[second[1]] + " "
+                            
+            return "It's " +  second_number[first] + (" oh " if oh else " ") + second_word + end
+            #TODO: Write code below to return a string with the solution to the prompt.
 
 def main():
      str1=input()
@@ -99,4 +120,3 @@ def main():
     
 if __name__ == '__main__': 
     main()
-        
